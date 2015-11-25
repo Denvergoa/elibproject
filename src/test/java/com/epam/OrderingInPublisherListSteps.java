@@ -17,7 +17,7 @@ public class OrderingInPublisherListSteps {
 
     @Given("I am a User browsing publishers list")
     public void userBrowsingBookList(){
-
+        stepsOrderingInPublisherList.userOpensPublisherPage();
     }
 
     @When("I click $value button on Publishers page")

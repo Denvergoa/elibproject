@@ -36,6 +36,11 @@ public class OrderingInBookListSteps {
         stepsOrderingInBookList.ascendingArrowIsPresent(value);
     }
 
+    @Then("Descending arrow appears on $value button on Book page")
+    public void descendingArrowAppears(@Named("$value") String value){
+        stepsOrderingInBookList.ascendingArrowIsPresent(value);
+    }
+
     @Then("All books are displayed in correct order of $value on Book page")
     public void allBooksAreDisplayedInCorrectOrder(@Named("$value") String value) throws ParseException {
         stepsOrderingInBookList.correctBookOrder(value);
@@ -51,9 +56,6 @@ public class OrderingInBookListSteps {
         stepsOrderingInBookList.correctNullBookOrder(value);
     }
 
-    @Then("Descending arrow appears on $value button on Book page")
-    public void descendingArrowAppears(@Named("$value") String value){
-        stepsOrderingInBookList.ascendingArrowIsPresent(value);
-    }
+
 
 }

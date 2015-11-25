@@ -1,7 +1,7 @@
 package com.epam.steps;
 
 
-import com.epam.pageObject.PublishersPage;
+import com.epam.pageObject.PublishersListPage;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
 
@@ -12,29 +12,31 @@ import static org.junit.Assert.assertTrue;
 
 
 public class StepsOrderingInPublisherList extends ScenarioSteps {
-    PublishersPage publishersPage;
+    PublishersListPage publishersListPage;
     @Step
-    public void userOpensBookPage() {
-        publishersPage.open();
+    public void userOpensPublisherPage() {
+        publishersListPage.open();
     }
     @Step
     public void userClickValueButton(String value) {
-        publishersPage.orderByValue(value);
+        publishersListPage.orderByValue(value);
     }
     @Step
     public void ascendingArrowIsPresent(String value) {
-        assertTrue("Arrow is not displayed", publishersPage.checkPresenceOfArrow(value));
+        assertTrue("Arrow is not displayed", publishersListPage.checkPresenceOfArrow(value));
     }
     @Step
     public void correctBookOrder(String value) throws ParseException {
-        assertTrue("Book ordering is not correct", publishersPage.checkCorrectBookOrdering(value));
+        assertTrue("Book ordering is not correct", publishersListPage.checkCorrectBookOrdering(value));
     }
     @Step
     public void correctBookDescendingOrder(String value) throws ParseException {
-        assertTrue("Descending book ordering is not correct", publishersPage.checkBookDescendingOrder(value));
+        assertTrue("Descending book ordering is not correct", publishersListPage.checkBookDescendingOrder(value));
     }
     @Step
     public void correctNullBookOrder(String value) {
-        assertTrue("Null book ordering is not correct", publishersPage.checkNullBookOrder(value));
+        assertTrue("Null book ordering is not correct", publishersListPage.checkNullBookOrder(value));
     }
+
+
 }

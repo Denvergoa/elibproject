@@ -3,7 +3,7 @@ package com.epam.pageObject;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
-
+import net.thucydides.core.annotations.DefaultUrl;
 import java.text.Collator;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -13,7 +13,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class AuthorsPage extends PageObject {
+
+@DefaultUrl("http://ecsc00101f71.epam.com/authors")
+public class AuthorsListPage extends PageObject {
+
     @FindBy(xpath = "//ng-view//ul//div/div[2]/a/strong")
     List<WebElementFacade> authorList;
     @FindBy(xpath = "//ng-view/div/div/div[3]/div/ul//p")
@@ -30,9 +33,6 @@ public class AuthorsPage extends PageObject {
     WebElementFacade lastNameOrderArrow;
     @FindBy(xpath = "//sorting-directive/ul/li[3]/span[2]")
     WebElementFacade dateOfBirthOrderArrow;
-
-
-//TODO Fill the firstNameList
 
     public void orderByValue(String value) {
         switch (value) {
@@ -65,73 +65,41 @@ public class AuthorsPage extends PageObject {
     }
 
     public boolean checkCorrectBookOrdering(String value) throws ParseException {
-        Collator myCollator = Collator.getInstance();
-        int result;
         boolean b = false;
-        String s1 = new String();
-        String s2 = new String();
         List<String> lst = new ArrayList<String>();
         switch (value) {
             case "FirstName":
-                //lst = listChanger(firstNameList);
+                lst = firstNameListMaker(authorList);
+                b = stringOrder(lst);
                 break;
             case "LastName":
                 lst = stringConvert(authorList);
+                b = stringOrder(lst);
                 break;
             case "DateOfBirth":
                 lst = listChanger(dateList);
+                b = dateOrder(lst);
                 break;
-        }
-        for (int i = 1; i < lst.size(); i++) {
-            s1 = lst.get(i);
-            System.out.println(s1);
-            s2 = lst.get(i - 1);
-            System.out.println(s2);
-            result = myCollator.compare(s1, s2);
-            System.out.println(result);
-            if (result <= 0)
-                b = true;
-            else {
-                b = false;
-                break;
-            }
-            System.out.println(b);
         }
         return b;
     }
 
-    public boolean checkBookDescendingOrder(String value) {
-        Collator myCollator = Collator.getInstance();
-        int result;
+    public boolean checkBookDescendingOrder(String value) throws ParseException {
         boolean b = false;
-        String s1 = new String();
-        String s2 = new String();
         List<String> lst = new ArrayList<String>();
         switch (value) {
             case "FirstName":
-                //lst = listChanger(firstNameList);
+                lst = firstNameListMaker(authorList);
+                b = stringDescendingOrder(lst);
                 break;
             case "LastName":
                 lst = stringConvert(authorList);
+                b = stringDescendingOrder(lst);
                 break;
             case "DateOfBirth":
                 lst = listChanger(dateList);
+                b = dateDescendingOrder(lst);
                 break;
-        }
-        for (int i = 1; i < lst.size(); i++) {
-            s1 = lst.get(i);
-            System.out.println(s1);
-            s2 = lst.get(i - 1);
-            System.out.println(s2);
-            result = myCollator.compare(s1, s2);
-            System.out.println(result);
-            if (result >= 0)
-                b = true;
-            else {
-                b = false;
-                break;
-            }
-            System.out.println(b);
         }
         return b;
     }
@@ -141,7 +109,7 @@ public class AuthorsPage extends PageObject {
         List<String> lst = new ArrayList<String>();
         switch (value) {
             case "FirstName":
-                //lst = listChanger(firstNameList);
+                lst = firstNameListMaker(authorList);
                 break;
             case "LastName":
                 lst = stringConvert(authorList);
@@ -194,6 +162,135 @@ public class AuthorsPage extends PageObject {
         return lst1;
     }
 
+    public static List<String> firstNameListMaker(List<WebElementFacade> lst) {
+        String s1;
+        String s2;
+        List<String> lst1 = new ArrayList<String>();
+        int a;
+        for (int i = 0; i < lst.size(); i++) {
+            s1 = lst.get(i).getText();
+            a = s1.indexOf(" ");
+            s2 = s1.substring(0, a);
+            lst1.add(i, s2);
+        }
+        return lst1;
+    }
+
+    public static boolean stringOrder(List<String> lst) {
+        Collator myCollator = Collator.getInstance();
+        int result;
+        boolean b = false;
+        String s1 = new String();
+        String s2 = new String();
+        for (int i = 1; i < lst.size(); i++) {
+            s1 = lst.get(i - 1);
+            System.out.println(s1);
+            s2 = lst.get(i);
+            System.out.println(s2);
+            result = myCollator.compare(s1, s2);
+            System.out.println(result);
+            if (result >= 0)
+                b = true;
+            else {
+                b = false;
+                break;
+            }
+            System.out.println(b);
+        }
+        return b;
+    }
+
+    public static boolean stringDescendingOrder(List<String> lst) {
+        Collator myCollator = Collator.getInstance();
+        int result;
+        boolean b = false;
+        String s1 = new String();
+        String s2 = new String();
+        for (int i = 1; i < lst.size(); i++) {
+            s1 = lst.get(i - 1);
+            System.out.println(s1);
+            s2 = lst.get(i);
+            System.out.println(s2);
+            result = myCollator.compare(s1, s2);
+            System.out.println(result);
+            if (result >= 0)
+                b = true;
+            else {
+                b = false;
+                break;
+            }
+            System.out.println(b);
+        }
+        return b;
+    }
+
+    public static boolean dateOrder(List<String> lst) throws ParseException {
+        int result;
+        boolean b = false;
+        String s1 = new String();
+        String s2 = new String();
+        Date date1 = new Date();
+        Date date2 = new Date();
+        int a = 0;
+        for (int i = 1; i < lst.size()/2*2; i++) {
+            s1 = lst.get(i - 1);
+            a = s1.indexOf(" ");
+            s1 = s1.substring(0, a);
+            System.out.println(s1);
+            s2 = lst.get(i);
+            a = s2.indexOf(" ");
+            s2 = s2.substring(0, a);
+            System.out.println(s2);
+            DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+            date1 = format.parse(s1);
+            date2 = format.parse(s2);
+            result = date1.compareTo(date2);
+            System.out.println(result);
+            if (result <= 0)
+                b = true;
+            else {
+                b = false;
+                break;
+            }
+            System.out.println(b);
+        }
+
+        return b;
+    }
+
+    public static boolean dateDescendingOrder(List<String> lst) throws ParseException {
+        int result;
+        boolean b = false;
+        String s1 = new String();
+        String s2 = new String();
+        Date date1 = new Date();
+        Date date2 = new Date();
+        int a = 0;
+        for (int i = 1; i < lst.size()/2*2; i++) {
+            s1 = lst.get(i - 1);
+            a = s1.indexOf(" ");
+            s1 = s1.substring(0, a);
+            System.out.println(s1);
+            s2 = lst.get(i);
+            a = s2.indexOf(" ");
+            s2 = s2.substring(0, a);
+            System.out.println(s2);
+            DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+            date1 = format.parse(s1);
+            date2 = format.parse(s2);
+            result = date1.compareTo(date2);
+            System.out.println(result);
+            if (result >= 0)
+                b = true;
+            else {
+                b = false;
+                break;
+            }
+            System.out.println(b);
+        }
+
+        return b;
+    }
 
 }
 

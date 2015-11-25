@@ -3,6 +3,7 @@ package com.epam.pageObject;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
+import net.thucydides.core.annotations.DefaultUrl;
 
 import java.text.Collator;
 import java.text.ParseException;
@@ -10,7 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class PublishersPage extends PageObject {
+@DefaultUrl("http://ecsc00101f71.epam.com/publishers")
+public class PublishersListPage extends PageObject {
 
     @FindBy(xpath = ".//*[@id='publishers']/ul[1]//p")
     List<WebElementFacade> publisherList;
@@ -18,6 +20,10 @@ public class PublishersPage extends PageObject {
     WebElementFacade nameOrderField;
     @FindBy(xpath = "//sorting-directive//li/span[2]")
     WebElementFacade nameOrderArrow;
+    @FindBy(xpath = ".//*[@id='publishers']/ul[2]/li[8]/a")
+    WebElementFacade nextButton;
+    @FindBy(xpath = ".//*[@id='publishers']//select")
+    WebElementFacade elementsPerPage;
 
 
     public void orderByValue(String value) {
@@ -49,21 +55,21 @@ public class PublishersPage extends PageObject {
                 lst = listChanger(publisherList);
                 break;
         }
-        for (int i = 1; i < lst.size(); i++) {
-            s1 = lst.get(i);
-            System.out.println(s1);
-            s2 = lst.get(i - 1);
-            System.out.println(s2);
-            result = myCollator.compare(s1, s2);
-            System.out.println(result);
-            if (result <= 0)
-                b = true;
-            else {
-                b = false;
-                break;
+            for (int i = 1; i < lst.size(); i++) {
+                s1 = lst.get(i - 1);
+                System.out.println(s1);
+                s2 = lst.get(i);
+                System.out.println(s2);
+                result = myCollator.compare(s1, s2);
+                System.out.println(result);
+                if (result <= 0)
+                    b = true;
+                else {
+                    b = false;
+                    break;
+                }
+                System.out.println(b);
             }
-            System.out.println(b);
-        }
         return b;
     }
 
@@ -80,9 +86,9 @@ public class PublishersPage extends PageObject {
                 break;
         }
         for (int i = 1; i < lst.size(); i++) {
-            s1 = lst.get(i);
+            s1 = lst.get(i - 1);
             System.out.println(s1);
-            s2 = lst.get(i - 1);
+            s2 = lst.get(i);
             System.out.println(s2);
             result = myCollator.compare(s1, s2);
             System.out.println(result);

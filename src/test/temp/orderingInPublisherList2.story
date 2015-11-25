@@ -11,7 +11,7 @@ Scenario 2
 Given I am a User browsing publishers list
 When I click $value button once more on Publishers page
 Then Descending arrow appears on $value button on Publishers page
-And All books are displayed in correct order on Publishers page of $value
+And All books are displayed in descending order on Publishers page of $value
 And Books with null values of the $value are displayed in the end of the list on Publishers page
 
 Examples:
