@@ -14,11 +14,13 @@ import java.util.List;
 import java.util.Locale;
 import static java.lang.Integer.compare;
 
-//TODO Error in Author descending order
-
 @DefaultUrl("http://ecsc00101f71.epam.com/books")
 public class BooksListPage extends PageObject {
 
+    @FindBy(xpath = "//lib-filter[2]/div/div/div/input")
+    WebElementFacade authorFilterField;
+    @FindBy(xpath = "html/body/div[1]/div[2]/aside/ng-include/accordion/div/div[1]/div[2]/div/form/dl/dd/lib-filter[1]/div/div/div/input")
+    WebElementFacade titleFilterField;
     @FindBy(xpath = "//*[@id='books']/div[3]/div/ul")
     List<WebElementFacade> booksList;
     @FindBy(xpath = ".//*[@id='books']/div[3]/div/ul//div//ul")
@@ -233,6 +235,7 @@ public class BooksListPage extends PageObject {
             s1 = lst.get(i).getText();
             a = s1.indexOf(" ");
             b = a + s1.indexOf(" ", a);
+            System.out.println("!!!!!!!!!B is: " + b);
             if(b == 0) {
                 s2 = s1.substring(a + 1);
             }
@@ -408,4 +411,27 @@ public class BooksListPage extends PageObject {
 
         return b;
     }
+
+    public void setTitleFilterField(String title) {
+        boolean b = titleFilterField.isVisible();
+        System.out.println(b);
+        //titleFilterField.sendKeys(title);
+    }
+
+    public void setAuthorFilterField(String author) {
+        authorFilterField.sendKeys(author);
+    }
+
+//    public void selectGenreFilterDropdownMenu(String genre) {
+//        genreFilterDropdownMenu.selectByValue(genre);
+//    }
+//
+//    public void selectSubgenreFilterDropdownMenu(String subgenre) {
+//        subgenreFilterDropdownMenu.selectByValue(subgenre);
+//    }
+//
+//    public void selectYearFilterField(String year) {
+//        yearFilterField.sendKeys(year);
+//    }
+
 }
